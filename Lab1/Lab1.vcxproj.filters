@@ -42,9 +42,6 @@
     <ClCompile Include="Audio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="skybox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -77,15 +74,15 @@
     <ClInclude Include="Audio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="skybox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\res\shader.frag">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\res\shader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\lightingShader.frag">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

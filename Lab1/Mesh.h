@@ -14,7 +14,7 @@ public:
 		this->normal = normal;
 	}
 
-	glm::vec3* GetPos() { return &pos; }
+	glm::vec3* GetPos() { return &pos; }  
 	glm::vec2* GetTexCoord() { return &texCoord; }
 	glm::vec3* GetNormal() { return &normal; }
 

@@ -17,9 +17,11 @@ MainGame::MainGame()
 	Display* _gameDisplay = new Display(); //new display
 	Mesh* mesh1();
 	Mesh* mesh2();
-	Mesh* mesh3();
-	Texture* texture();
+	Texture* texture1();
+	Texture* texture2();
 	Shader* shader();
+
+
 
 }
 
@@ -27,25 +29,24 @@ MainGame::~MainGame()
 {
 }
 
-void MainGame::run()
+void MainGame::run() //this method initialises the systems and starts the game loop
 {
-	initialiseSystems();
+	initialiseSystems(); 
 	gameLoop();
 }
 
 void MainGame::initialiseSystems()
 {
 	_gameDisplay.initDisplay();
-	mesh1.loadModel("..\\res\\Models\\monkey3.obj");
-	mesh2.loadModel("..\\res\\Models\\spaceship.obj");
+	mesh1.loadModel("..\\res\\Models\\cube.obj"); //loads the first instance of mesh 1
+	mesh2.loadModel("..\\res\\Models\\spaceship.obj"); //loads mesh 2, the controllable spaceship mesh
 
 
-	texture1.init("..\\res\\Textures\\water.jpg"); //
-	texture2.init("..\\res\\Textures\\metalTexture.jpg");
-	shader.initShader("..\\res\\Textures\\shader"); //new shader
+	texture1.init("..\\res\\Textures\\water.jpg"); //sets the texture for mesh 1
+	texture2.init("..\\res\\Textures\\metalTexture.jpg"); //sets the texture for mesh 2
+	shader.initShader("..\\res\\Textures\\shader"); //initialises the shader
 
-
-	changeSound = audioDevice.loadSound("..\\res\\Audio\\swoosh.wav");
+	//the following lines are used to load all of the audio used in the game
 	backGroundMusic1 = audioDevice.loadSound("..\\res\\Audio\\background1.wav");
 	backGroundMusic2 = audioDevice.loadSound("..\\res\\Audio\\background2.wav");
 	catNoise = audioDevice.loadSound("..\\res\\Audio\\CatNoise2.wav");
@@ -55,16 +56,15 @@ void MainGame::initialiseSystems()
 	wolfNoise = audioDevice.loadSound("..\\res\\Audio\\WolfNoise.wav");
 	goatNoise = audioDevice.loadSound("..\\res\\Audio\\GoatNoise.wav");
 
-	currentMusic = backGroundMusic1;
+	currentMusic = backGroundMusic1; //sets the current music to backgroundMusic1
 
-	audioDevice.playSound(backGroundMusic1);
+	audioDevice.playSound(backGroundMusic1); //plays backgroundMusic1
 
-	myCamera.initCamera(glm::vec3(trans2X, trans2Y, trans2Z - 100), 70.0f, (float)_gameDisplay.getWidth() / _gameDisplay.getHeight(), 0.01f, 1000.0f);
 }
 
 void MainGame::gameLoop()
 {
-	while (_gameState != GameState::EXIT)
+	while (_gameState != GameState::EXIT) //while the game is running we run the 3 methods below
 	{
 		processInput();
 		updateModelTransform();
@@ -89,70 +89,88 @@ void MainGame::processInput()
 			switch (event.key.keysym.sym)
 			{
 
-				// controls for model movement
+				// controls for model and camera movement, camera uses same coordinats variables as the model to allow for the camera to follow the model
 			case SDLK_a:
-				trans2X = trans2X + 0.25f;
+				trans2X = trans2X + 0.25f; //adds 0.25f to trans2X which moves the model and camera to the left
 				break;
+
 			case SDLK_d:
-				trans2X = trans2X - 0.25f;
+				trans2X = trans2X - 0.25f; //movement to the right
 				break;
+			
 			case SDLK_w:
-				trans2Y = trans2Y + 0.25f;
+				trans2Y = trans2Y + 0.25f; //movement up
 				break;
+			
 			case SDLK_s:
-				trans2Y = trans2Y - 0.25f;
+				trans2Y = trans2Y - 0.25f; //movement down
 				break;
+			
 			case SDLK_SPACE:
-				trans2Z = trans2Z + 0.25f;
+				trans2Z = trans2Z + 0.25f; //movement forward
 				break;
+			
 			case SDLK_LALT:
-				trans2Z = trans2Z - 0.25f;
+				trans2Z = trans2Z - 0.25f; //movement backward
 				break;
 
 
-				//other controls
+				//controls used to spawn new models using number keys
 			case SDLK_1:
-				audioDevice.stopSound(currentMusic);
-				audioDevice.playSound(changeSound);
-				audioDevice.playSound(backGroundMusic2);
-				mesh1.loadModel("..\\res\\Models\\monkey3.obj");
-				texture1.init("..\\res\\Textures\\Brown.jpg");
+				audioDevice.stopSound(currentMusic); //stops the current music, this is used to stop overlap of sound if models are spawned in quickly
+				audioDevice.playSound(backGroundMusic2); //plays the new sound specific to the model
+				currentMusic = backGroundMusic2; //sets the new sound to be currentMusic
+
+				mesh1.loadModel("..\\res\\Models\\monkey3.obj"); //changes the model used for mesh1
+				texture1.init("..\\res\\Textures\\brown.jpg"); //changes the texture used for mesh1
 				break;
+			
 			case SDLK_2:
 				audioDevice.stopSound(currentMusic);
 				audioDevice.playSound(wolfNoise);
+				currentMusic = wolfNoise;
 				mesh1.setSphereData(*transform1.GetPos(), 15.0f);
 				mesh1.loadModel("..\\res\\Models\\wolf.obj");
 				texture1.init("..\\res\\Textures\\DarkGrey.jpg");
 				break;
+			
 			case SDLK_3:
 				audioDevice.stopSound(currentMusic);
 				audioDevice.playSound(ratNoise);
+				currentMusic = ratNoise;
 				mesh1.setSphereData(*transform1.GetPos(), 0.02f);
 				mesh1.loadModel("..\\res\\Models\\rat.obj");
 				texture1.init("..\\res\\Textures\\LightGrey.jpg");
 				break;
+			
 			case SDLK_4:
 				audioDevice.stopSound(currentMusic);		
 				audioDevice.playSound(catNoise);
+				currentMusic = catNoise;
 				mesh1.loadModel("..\\res\\Models\\cat.obj");
 				texture1.init("..\\res\\Textures\\Orange.jpg");
 				break;
+			
 			case SDLK_5:
 				audioDevice.stopSound(currentMusic);
 				audioDevice.playSound(deerNoise);
+				currentMusic = deerNoise;
 				mesh1.loadModel("..\\res\\Models\\deer.obj");
 				texture1.init("..\\res\\Textures\\LightBrown.jpg");
 				break;
+			
 			case SDLK_6:
 				audioDevice.stopSound(currentMusic);
 				audioDevice.playSound(cowNoise);
+				currentMusic = cowNoise;
 				mesh1.loadModel("..\\res\\Models\\cow.obj");
 				texture1.init("..\\res\\Textures\\Black.jpg");
 				break;
+			
 			case SDLK_7:
 				audioDevice.stopSound(currentMusic);
 				audioDevice.playSound(goatNoise);
+				currentMusic = goatNoise;
 				mesh1.loadModel("..\\res\\Models\\goat.obj");
 				texture1.init("..\\res\\Textures\\White.jpg");
 				break;
@@ -165,11 +183,10 @@ void MainGame::processInput()
 
 bool MainGame::checkCollision(glm::vec3& m1Pos, float m1Rad, glm::vec3 m2Pos, float m2Rad)
 {
-	float distanceSq = ((m2Pos.x - m1Pos.x)*(m2Pos.x - m1Pos.x) + (m2Pos.y - m1Pos.y) * (m2Pos.y - m1Pos.y) + (m2Pos.z - m1Pos.z)*(m2Pos.z - m1Pos.z));
+	float distanceSq = ((m2Pos.x - m1Pos.x)*(m2Pos.x - m1Pos.x) + (m2Pos.y - m1Pos.y) * (m2Pos.y - m1Pos.y) + (m2Pos.z - m1Pos.z)*(m2Pos.z - m1Pos.z)); //equation used to work out the distance between the two objects
 
-	if (distanceSq < ((m1Rad + m2Rad)*(m1Rad + m2Rad)))
+	if (distanceSq < ((m1Rad + m2Rad)*(m1Rad + m2Rad))) //if statement used to check if a collision has occurred
 		return true;
-	
 	
 		return false;
 	
@@ -184,12 +201,12 @@ void MainGame::drawGame()
 	shader.Bind();
 	if (checkCollision(mesh1.GetSpherePos(), mesh1.GetSphereRad(), mesh2.GetSpherePos(), mesh2.GetSphereRad()) == false)
 	{
-		// code for object 1 - the monkey head
+		// code for object 1 - the cube
 		shader.Update(transform1, myCamera);
 		texture1.Bind(0);
 		mesh1.draw();
 	}
-	//code for object 2 - the asteroid
+	//code for object 2 - the rocket ship
 	shader.Update(transform2, myCamera);
 	texture2.Bind(0);
 	mesh2.draw();

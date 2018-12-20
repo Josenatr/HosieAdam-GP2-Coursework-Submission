@@ -16,34 +16,32 @@ public:
 	MainGame();
 	~MainGame();
 
-	void run();
+	void run(); //method used to run game
 	
 
 private:
 
-	void initialiseSystems();
-	void processInput();
-	void gameLoop();
-	void drawGame();
-	bool checkCollision(glm::vec3&, float, glm::vec3, float);
-	void updateModelTransform();
+	void initialiseSystems(); //method used to initialise game systems
+	void processInput(); //method used to process key inputs
+	void gameLoop(); //method used for game loop
+	void drawGame(); //method used to draw game
+	bool checkCollision(glm::vec3&, float, glm::vec3, float); //boolean method used for checking if collision has occurred
+	void updateModelTransform(); //method used to allow ability to update model transform outside drawGame()
 
-	Display _gameDisplay;
+	Display _gameDisplay; 
 	GameState _gameState;
 	Mesh mesh1;
 	Mesh mesh2;
-	Mesh mesh3;
 	Camera myCamera;
 	Texture texture1;
 	Texture texture2;
-	Texture texture3;
 	Transform transform1;
 	Transform transform2;
-	Transform transform3;
 	Shader shader;
 	Audio audioDevice;
 
-	unsigned int changeSound;
+
+	//unsigned int used for audio within game
 	unsigned int backGroundMusic1;
 	unsigned int backGroundMusic2;
 	unsigned int currentMusic;
